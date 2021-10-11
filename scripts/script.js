@@ -106,6 +106,7 @@ async function showMatTypes(mat) {
     .get(url)
     .then((response) => {
       handleResponse(response);
+      console.log();
     })
     .catch((error) =>
       alert(
@@ -115,17 +116,13 @@ async function showMatTypes(mat) {
     );
 
   let _mat = materialArr[0];
-  let cpt = _mat.filter((x) => x.typeId === 1);
+  let carpetOptions = _mat.filter((x) => x.typeId === 1);
   let resilientOptions = _mat.filter((x) => x.typeId === 2);
   let miscOptions = _mat.filter((x) => x.typeId === 9);
 
-  // let materialCarpet = cpt.filter((x) => x.styleId === "null");
-  // let materialCarpet = cpt.filter((x) => console.log(x));
-  // console.log("materialCarpet", materialCarpet);
-
   options.innerHTML = "";
 
-  mat === "Carpet" && getElement(cpt, mat);
+  mat === "Carpet" && getElement(carpetOptions, mat);
 
   mat === "Resilient" && getElement(resilientOptions, mat);
 
@@ -144,7 +141,6 @@ const handleResponse = (response) => {
   resArr.push(res);
 
   res.forEach(function (object) {
-    // console.log("object", object);
     for (key in object) {
       if (object[key] == null) object[key] = "";
       materialArr.push(res);
@@ -226,6 +222,7 @@ function recoverPackage() {
   let matList = resArr[0];
   let currentPackage = localStorage.getItem("package");
   let convertedArr = [];
+
   let chars = currentPackage.split(",");
 
   Object.values(chars).forEach((val) => {
@@ -269,10 +266,14 @@ function recoveredMaterial(mat, matType) {
   recoverPkgBtn.classList.add("hidden");
   saveBtn.disabled = false;
   clrBtn.disabled = false;
+  // localStorage.removeItem("package");
 }
 
 function savePackage() {
   localStorage.setItem("package", pkgArr);
+
+  let storedPackage = localStorage.getItem("package");
+  console.log(storedPackage);
 
   saveBtn.disabled = true;
   saveBtn.classList.add("hidden");
