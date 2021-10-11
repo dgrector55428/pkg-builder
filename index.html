@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Package Builder</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.15.1/css/all.css"
+      integrity="sha384-9ZfPnbegQSumzaE7mks2IYgHoayLtuto3AS6ieArECeaR8nCfliJVuLh/GaQ1gyM"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
+      integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- <div class="container" id="lines-container">
+      <table
+        id="csvImportTbl"
+        class="display table table-hover table-bordered"
+        style="width: 100%; height: 400px"
+      >
+        <thead style="background-color: #3d3d3d; color: #fff">
+          <tr>
+            <th>Material</th>
+            <th>Quantity</th>
+            <th>UOM</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Over the moon Armstrong</td>
+            <td>1000</td>
+            <td>sf</td>
+            <td>
+              <button
+                class="btn btn-sm btn-dark"
+                title="Click to add line to package"
+              >
+                <i class="far fa-check"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div> -->
+    <div
+      class="container section"
+      id="package-container"
+      style="margin-top: 50px; width: 80%"
+    >
+      <div class="row h100">
+        <div class="col-md-2 h100 br side-menu" id="matTypeList"></div>
+        <div class="col-md-10 h100">
+          <div class="row" style="padding: 20px 0">
+            <div class="col-md-12" id="ddlPackagesWrapper">
+              <!-- <select
+                id="ddlPackages"
+                name="ddlPackages"
+                class="packages-dropdown"
+                style="width: 40%"
+              >
+                {SUBQUERY,Name="cbo_Name", Query=" SELECT '' AS 'RId','' AS
+                'ReName' UNION SELECT CAST(Id AS VARCHAR(100)) AS 'RId',PkgName
+                AS 'ReName' FROM APP_IEX.dbo.Packages", Format="
+                <option value="[RId]">[ReName]</option>
+                ", SelectedFormat="
+                <option value="[RId]" selected>[ReName]</option>
+                ", SelectedField="RId",
+                SelectedItems="[FORMAT,[ReName],{ISEMPTY:''}]"}
+              </select> -->
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6" style="text-align: start">
+              <button
+                id="recoverPkgBtn"
+                class="btn btn-primary btn-sm hidden"
+                onclick="recoverPackage()"
+              >
+                <i class="fal fa-redo-alt" style="margin-right: 5px"></i>
+                Recover Pkg
+              </button>
+            </div>
+            <div class="col-md-6" style="text-align: end">
+              <button
+                id="clrBtn"
+                class="btn btn-danger btn-sm"
+                value="clrBtn"
+                disabled
+                title="Clear package and options"
+                onclick="clrPkg(); return false;"
+                style="margin-right: 30px"
+              >
+                <i class="far fa-times" style="margin-right: 8px"></i>Clear
+              </button>
+            </div>
+          </div>
+          <div class="row" style="width: 100%; height: 80%">
+            <div class="col-md-6 h55 panel-width" style="height: 400px">
+              <div
+                id="options"
+                class="pkg-panel"
+                ondrop="drop(event)"
+                ondragover="allowDrop(event)"
+              ></div>
+            </div>
+            <div class="col-md-6 h55 panel-width" style="height: 400px">
+              <div
+                id="package"
+                class="pkg-panel"
+                ondrop="drop(event, this)"
+                ondragover="allowDrop(event)"
+              ></div>
+              <div class="talc mt10">
+                <button
+                  id="saveBtn"
+                  disabled
+                  class="btn btn-dark btn-sm w50 packageHandlerBtn"
+                  onclick="savePackage(this.id);return false;"
+                >
+                  <i class="fal fa-save saveIcon imr"></i>
+                  Save
+                </button>
+                <button
+                  id="connectBtn"
+                  class="btn btn-dark btn-sm w50 hidden packageHandlerBtn"
+                  onclick="connectJob(this.id);return false;"
+                >
+                  <i class="far fa-link imr"></i>
+                  Connect Job
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"
+      integrity="sha512-uVSVjE7zYsGz4ag0HEzfugJ78oHCI1KhdkivjQro8ABL/PRiEO4ROwvrolYAcZnky0Fl/baWKYilQfWvESliRA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.1.0/jszip-utils.min.js"
+      integrity="sha512-3WaCYjK/lQuL0dVIRt1thLXr84Z/4Yppka6u40yEJT1QulYm9pCxguF6r8V84ndP5K03koI9hV1+zo/bUbgMtA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
+      integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.4/axios.min.js"
+      integrity="sha512-lTLt+W7MrmDfKam+r3D2LURu0F47a3QaW5nF0c6Hl0JDZ57ruei+ovbg7BrZ+0bjVJ5YgzsAWE+RreERbpPE1g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="./scripts/dragDrop.js"></script>
+    <script src="./scripts/packages.js"></script>
+    <script src="./scripts/recoverPackage.js"></script>
+    <script src="./scripts/script.js"></script>
+  </body>
+</html>

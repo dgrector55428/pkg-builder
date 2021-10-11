@@ -1,0 +1,310 @@
+body {
+  background-color: #868686;
+}
+
+.h100 {
+  height: 100%;
+}
+
+.w50 {
+  width: 50%;
+}
+
+.w90 {
+  width: 90%;
+}
+
+.w100 {
+  width: 100%;
+}
+
+.w200px {
+  width: 200px;
+}
+
+.br {
+  border-right: 1px solid #575757;
+}
+
+.bb {
+  border-bottom: 1px solid #575757;
+}
+
+.talc {
+  text-align: center;
+}
+
+.m5 {
+  margin: 5px;
+}
+
+.mt10 {
+  margin-top: 10px;
+}
+
+.mt20 {
+  margin-top: 20px;
+}
+
+.mt160 {
+  margin-top: 160px;
+}
+
+.mr10 {
+  margin-right: 10px;
+}
+
+.ml10 {
+  margin-left: 10px;
+}
+
+.ml85 {
+  margin-left: 85px;
+}
+
+.h55 {
+  height: 55vh;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.panel-width {
+  width: 32%;
+}
+
+#package-container {
+  margin-top: 50px;
+  background-color: #ebebeb;
+  height: 550px;
+  margin-bottom: 50px;
+}
+
+#lines-container {
+  margin-top: 60px;
+  height: 500px;
+  width: 1430px;
+  border: none;
+}
+
+#lines-container table {
+  background-color: #fff;
+}
+
+.section {
+  border: 1px solid #838383;
+  border-radius: 5px;
+  width: 1430px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 5px;
+}
+
+.container {
+  max-width: 1800px;
+}
+
+.side-menu {
+  padding-top: 20px;
+  text-align: center;
+}
+
+#ddlCurrentPkgs {
+  width: 200px;
+}
+
+.pkg-panel {
+  border: 1px solid #838383;
+  border-radius: 5px;
+  height: 400px;
+  width: 100%;
+  margin-top: 10px;
+  overflow: scroll;
+  overflow-x: hidden;
+  /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
+}
+
+#clrBtn {
+  background-color: transparent;
+  color: #dc3545;
+}
+
+#recoverPkgBtn {
+  background-color: transparent;
+  color: #007bff;
+}
+
+#recoverPkgBtn:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+#matTypeList {
+  width: 15%;
+}
+
+#matTypeList > #Carpet {
+  border: 2px solid orangered;
+  background-color: #ff45003d;
+  color: #3c3c3c;
+}
+
+#matTypeList > #Resilient {
+  border: 2px solid #2f8cc2;
+  background-color: #2f8cc256;
+  color: #3c3c3c;
+}
+
+#matTypeList > #Misc {
+  border: 2px solid #82c22f;
+  background-color: #82c22f54;
+  color: #3c3c3c;
+}
+
+#toggleBtn {
+  background: none;
+}
+
+#toggleBtn:active,
+#toggleBtn:focus {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+.rotate {
+  -moz-transition: all 0.25s linear;
+  -webkit-transition: all 0.25s linear;
+  transition: all 0.25s linear;
+}
+
+.rotate.down {
+  -moz-transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.rowData {
+  font-size: 18px;
+}
+
+#rowWrapper {
+  border-bottom: 1px solid #d3d3d3;
+  padding: 20px 0;
+}
+
+#collapseExample {
+  margin-top: 70px;
+}
+
+#headWrapper {
+  margin-bottom: 20px;
+  border-bottom: 1px solid #d3d3d3;
+}
+
+#headWrapper .col-md-2,
+#headWrapper .col-md-6 {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.optionsList {
+  text-align: left;
+  padding: 5px;
+  cursor: pointer;
+  margin: 10px;
+  border-radius: 5px;
+}
+
+.optionsList:last-child {
+  margin-bottom: 100px;
+}
+
+.optionsList p {
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.Carpet {
+  border: 2px solid orangered;
+}
+
+/* .Carpet div:first-child {
+  background-color: #ff45003d;
+} */
+
+.Resilient {
+  border: 2px solid #2f8cc2;
+  /* background-color: #2f8cc256; */
+}
+
+.Misc {
+  border: 2px solid #82c22f;
+  /* background-color: #82c22f54; */
+}
+
+#pkgOptionsList {
+  text-align: left;
+}
+
+/* .matIcon {
+  font-size: 21px;
+  margin-top: 10px;
+} */
+
+.matBtnIcon {
+  font-size: 18px;
+  margin-right: 15px;
+}
+
+.sideBarBtn {
+  text-align: left;
+  font-weight: 700;
+  font-size: 14px;
+  border-width: 2px;
+  margin-bottom: 10px;
+  width: 100%;
+  letter-spacing: 1.2px;
+  color: #fff;
+}
+
+.sideBarBtn:active,
+.sideBarBtn:focus {
+  border: none;
+  outline: none;
+}
+
+.imr {
+  margin-right: 8px;
+}
+.iml {
+  margin-left: 8px;
+}
+
+.saveIcon {
+  font-size: 16px;
+}
+
+#helperText {
+  font-style: italic;
+}
+
+.helper-border {
+  border-top: 1px solid green;
+  border-bottom: 1px solid green;
+}
+
+.matBlockTitle {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#connectBtn {
+  position: relative;
+  bottom: 31px;
+}
+
+#dragMfrName {
+  font-weight: bold;
+  position: relative;
+  top: 25%;
+}
