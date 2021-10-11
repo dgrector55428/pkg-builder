@@ -106,7 +106,6 @@ async function showMatTypes(mat) {
     .get(url)
     .then((response) => {
       handleResponse(response);
-      console.log();
     })
     .catch((error) =>
       alert(
@@ -116,13 +115,17 @@ async function showMatTypes(mat) {
     );
 
   let _mat = materialArr[0];
-  let carpetOptions = _mat.filter((x) => x.typeId === 1);
+  let cpt = _mat.filter((x) => x.typeId === 1);
   let resilientOptions = _mat.filter((x) => x.typeId === 2);
   let miscOptions = _mat.filter((x) => x.typeId === 9);
 
+  // let materialCarpet = cpt.filter((x) => x.styleId === "null");
+  // let materialCarpet = cpt.filter((x) => console.log(x));
+  // console.log("materialCarpet", materialCarpet);
+
   options.innerHTML = "";
 
-  mat === "Carpet" && getElement(carpetOptions, mat);
+  mat === "Carpet" && getElement(cpt, mat);
 
   mat === "Resilient" && getElement(resilientOptions, mat);
 
@@ -141,6 +144,7 @@ const handleResponse = (response) => {
   resArr.push(res);
 
   res.forEach(function (object) {
+    // console.log("object", object);
     for (key in object) {
       if (object[key] == null) object[key] = "";
       materialArr.push(res);
@@ -222,16 +226,16 @@ function recoverPackage() {
   let matList = resArr[0];
   let currentPackage = localStorage.getItem("package");
   let convertedArr = [];
+  let chars = currentPackage.split(",");
 
-  Object.values(currentPackage).forEach((val) => {
+  Object.values(chars).forEach((val) => {
     convertedArr.push(parseInt(val));
   });
 
-  var recoveredPkg = matList.filter((item) => convertedArr.includes(item.mId));
+  let recoveredPkg = matList.filter((item) => convertedArr.includes(item.mId));
 
   recoveredPkg.map(function (mat) {
     let materialType = mat.typeId;
-    console.log(materialType);
 
     materialType === 1 && recoveredMaterial(mat, "Carpet");
     materialType === 2 && recoveredMaterial(mat, "Resilient");
@@ -268,11 +272,7 @@ function recoveredMaterial(mat, matType) {
 }
 
 function savePackage() {
-  console.log("in save pkg");
   localStorage.setItem("package", pkgArr);
-
-  let storedPackage = localStorage.getItem("package");
-  console.log(storedPackage);
 
   saveBtn.disabled = true;
   saveBtn.classList.add("hidden");

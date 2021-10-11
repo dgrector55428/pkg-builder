@@ -75,10 +75,11 @@ body {
 }
 
 #package-container {
-  margin-top: 50px;
   background-color: #ebebeb;
-  height: 550px;
+  height: 560px;
+  margin-top: 50px;
   margin-bottom: 50px;
+  width: 80%;
 }
 
 #lines-container {
@@ -123,15 +124,15 @@ body {
   /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
 }
 
-#clrBtn {
+/* #clrBtn {
   background-color: transparent;
   color: #dc3545;
-}
+} */
 
-#recoverPkgBtn {
+/* #recoverPkgBtn {
   background-color: transparent;
   color: #007bff;
-}
+} */
 
 #recoverPkgBtn:hover {
   background-color: #007bff;
@@ -225,7 +226,8 @@ body {
 }
 
 .Carpet {
-  border: 2px solid orangered;
+  border: 2px solid #ff4500;
+  background-color: #ff45003d;
 }
 
 /* .Carpet div:first-child {
@@ -234,12 +236,12 @@ body {
 
 .Resilient {
   border: 2px solid #2f8cc2;
-  /* background-color: #2f8cc256; */
+  background-color: #2f8cc256;
 }
 
 .Misc {
   border: 2px solid #82c22f;
-  /* background-color: #82c22f54; */
+  background-color: #82c22f54;
 }
 
 #pkgOptionsList {

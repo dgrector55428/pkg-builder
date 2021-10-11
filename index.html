@@ -66,17 +66,13 @@
         </tbody>
       </table>
     </div> -->
-    <div
-      class="container section"
-      id="package-container"
-      style="margin-top: 50px; width: 80%"
-    >
+    <div class="container section" id="package-container">
       <div class="row h100">
         <div class="col-md-2 h100 br side-menu" id="matTypeList"></div>
-        <div class="col-md-10 h100">
+        <div class="col-md-10 h100" style="background-color: #dddcdc">
           <div class="row" style="padding: 20px 0">
             <div class="col-md-12" id="ddlPackagesWrapper">
-              <!-- <select
+              <select
                 id="ddlPackages"
                 name="ddlPackages"
                 class="packages-dropdown"
@@ -90,7 +86,7 @@
                 <option value="[RId]" selected>[ReName]</option>
                 ", SelectedField="RId",
                 SelectedItems="[FORMAT,[ReName],{ISEMPTY:''}]"}
-              </select> -->
+              </select>
             </div>
           </div>
           <div class="row">
@@ -125,6 +121,7 @@
                 class="pkg-panel"
                 ondrop="drop(event)"
                 ondragover="allowDrop(event)"
+                style="background-color: #ebebeb"
               ></div>
             </div>
             <div class="col-md-6 h55 panel-width" style="height: 400px">
@@ -133,6 +130,7 @@
                 class="pkg-panel"
                 ondrop="drop(event, this)"
                 ondragover="allowDrop(event)"
+                style="background-color: #ebebeb"
               ></div>
               <div class="talc mt10">
                 <button
