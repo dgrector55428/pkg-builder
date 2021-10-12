@@ -90,7 +90,28 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-md-6" style="text-align: start">
+            <div class="col-md-6">
+              <input
+                id="materialSearchInput"
+                class="packageInput"
+                type="text"
+                style="
+                  width: 60%;
+                  border-radius: 3px;
+                  border: 1px solid grey;
+                  padding: 3px;
+                "
+                placeholder="Search materials"
+              />
+              <button class="btn btn-sm btn-primary" id="srchMatBtn">
+                Submit
+              </button>
+              <span
+                id="srchError"
+                style="color: #dc3545; margin-left: 10px"
+              ></span>
+            </div>
+            <div class="col-md-6" style="text-align: end">
               <button
                 id="recoverPkgBtn"
                 class="btn btn-primary btn-sm hidden"
@@ -99,8 +120,6 @@
                 <i class="fal fa-redo-alt" style="margin-right: 5px"></i>
                 Recover Pkg
               </button>
-            </div>
-            <div class="col-md-6" style="text-align: end">
               <button
                 id="clrBtn"
                 class="btn btn-danger btn-sm"
@@ -209,6 +228,7 @@
     <script src="./scripts/dragDrop.js"></script>
     <script src="./scripts/packages.js"></script>
     <script src="./scripts/recoverPackage.js"></script>
+    <script src="./scripts/srchMatArr.js"></script>
     <script src="./scripts/script.js"></script>
   </body>
 </html>

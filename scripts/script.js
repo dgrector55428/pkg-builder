@@ -53,6 +53,8 @@ let helperWrapper = document.getElementById("helper-wrapper");
 let pkgDiv = document.getElementById("package");
 let saveBtn = document.getElementById("saveBtn");
 let connectBtn = document.getElementById("connectBtn");
+let materialSearchInput = document.getElementById("materialSearchInput");
+let srchError = document.getElementById("srchError");
 
 let materialArr = [];
 let pkgArr = [];
@@ -130,7 +132,14 @@ async function showMatTypes(mat) {
 }
 
 function getElement(option, matType) {
-  option.map(
+  let newArr = option.map(function (item) {
+    if (item.styleId === "null" || item.styleId === undefined) {
+      item.styleId = "";
+    }
+    return item;
+  });
+
+  newArr.map(
     (mat) => (options.innerHTML += createMaterialElement(mat, matType))
   );
 }
@@ -192,6 +201,8 @@ const clrBoard = () => {
 };
 
 const createMaterialElement = (mat, matType) => {
+  console.log(mat);
+
   let html = `
       <div 
         class="row optionsList ${matType}" 
@@ -223,21 +234,25 @@ function recoverPackage() {
   let currentPackage = localStorage.getItem("package");
   let convertedArr = [];
 
-  let chars = currentPackage.split(",");
+  if (currentPackage) {
+    let chars = currentPackage.split(",");
 
-  Object.values(chars).forEach((val) => {
-    convertedArr.push(parseInt(val));
-  });
+    Object.values(chars).forEach((val) => {
+      convertedArr.push(parseInt(val));
+    });
 
-  let recoveredPkg = matList.filter((item) => convertedArr.includes(item.mId));
+    let recoveredPkg = matList.filter((item) =>
+      convertedArr.includes(item.mId)
+    );
 
-  recoveredPkg.map(function (mat) {
-    let materialType = mat.typeId;
+    recoveredPkg.map(function (mat) {
+      let materialType = mat.typeId;
 
-    materialType === 1 && recoveredMaterial(mat, "Carpet");
-    materialType === 2 && recoveredMaterial(mat, "Resilient");
-    materialType === 9 && recoveredMaterial(mat, "Misc");
-  });
+      materialType === 1 && recoveredMaterial(mat, "Carpet");
+      materialType === 2 && recoveredMaterial(mat, "Resilient");
+      materialType === 9 && recoveredMaterial(mat, "Misc");
+    });
+  }
 }
 
 function recoveredMaterial(mat, matType) {
@@ -266,7 +281,6 @@ function recoveredMaterial(mat, matType) {
   recoverPkgBtn.classList.add("hidden");
   saveBtn.disabled = false;
   clrBtn.disabled = false;
-  // localStorage.removeItem("package");
 }
 
 function savePackage() {
@@ -296,6 +310,20 @@ const toggleBtn = (id) => {
     buttonToToggle.classList.add("hidden");
   }
 };
+
+function test() {
+  console.log("test test");
+}
+
+$("#srchMatBtn").on("click", function () {
+  let matSrchVal = materialSearchInput.value;
+
+  let filter = matSrchVal.charAt(0).toUpperCase() + matSrchVal.slice(1);
+  console.log(filter);
+  !matSrchVal
+    ? (srchError.innerHTML = "Search term required")
+    : srchMatArr(resArr, matSrchVal);
+});
 
 document.addEventListener(
   "dragstart",
