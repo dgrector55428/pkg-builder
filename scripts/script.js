@@ -281,6 +281,7 @@ function recoveredMaterial(mat, matType) {
   recoverPkgBtn.classList.add("hidden");
   saveBtn.disabled = false;
   clrBtn.disabled = false;
+  // localStorage.removeItem("package");
 }
 
 function savePackage() {
