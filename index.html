@@ -14,15 +14,12 @@
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
       crossorigin="anonymous"
     />
+    <!-- <link rel="stylesheet" href="./bootstrap.css" /> -->
     <link
       rel="stylesheet"
       href="https://pro.fontawesome.com/releases/v5.15.1/css/all.css"
       integrity="sha384-9ZfPnbegQSumzaE7mks2IYgHoayLtuto3AS6ieArECeaR8nCfliJVuLh/GaQ1gyM"
       crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css"
     />
     <link
       rel="stylesheet"
@@ -71,22 +68,23 @@
         <div class="col-md-2 h100 br side-menu" id="matTypeList"></div>
         <div class="col-md-10 h100" style="background-color: #dddcdc">
           <div class="row" style="padding: 20px 0">
+            <div class="col-md-12">
+              <h6>Available Packages</h6>
+            </div>
             <div class="col-md-12" id="ddlPackagesWrapper">
               <select
                 id="ddlPackages"
                 name="ddlPackages"
                 class="packages-dropdown"
                 style="width: 40%"
+              ></select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <small style="font-style: italic; color: #6a6a6a"
+                >Search by manufacturer name</small
               >
-                {SUBQUERY,Name="cbo_Name", Query=" SELECT '' AS 'RId','' AS
-                'ReName' UNION SELECT CAST(Id AS VARCHAR(100)) AS 'RId',PkgName
-                AS 'ReName' FROM APP_IEX.dbo.Packages", Format="
-                <option value="[RId]">[ReName]</option>
-                ", SelectedFormat="
-                <option value="[RId]" selected>[ReName]</option>
-                ", SelectedField="RId",
-                SelectedItems="[FORMAT,[ReName],{ISEMPTY:''}]"}
-              </select>
             </div>
           </div>
           <div class="row">
@@ -96,12 +94,14 @@
                 class="packageInput"
                 type="text"
                 style="
-                  width: 60%;
+                  width: 80%;
                   border-radius: 3px;
                   border: 1px solid grey;
                   padding: 3px;
+                  position: relative;
+                  top: 1.4px;
                 "
-                placeholder="Search materials"
+                placeholder="Search"
               />
               <button class="btn btn-sm btn-primary" id="srchMatBtn">
                 Submit
@@ -159,7 +159,7 @@
                   onclick="savePackage(this.id);return false;"
                 >
                   <i class="fal fa-save saveIcon imr"></i>
-                  Save
+                  Save Package
                 </button>
                 <button
                   id="connectBtn"
@@ -175,10 +175,38 @@
         </div>
       </div>
     </div>
+    <div class="modal" id="pkgModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modal title</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="modalPkgBody"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary">Save changes</button>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script
-      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
       crossorigin="anonymous"
     ></script>
     <script
@@ -193,7 +221,6 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"

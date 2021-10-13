@@ -1,9 +1,4 @@
 $(document).ready(function () {
-  $("#ddlPackages").select2({
-    placeholder: "Select Packages",
-    allowClear: true,
-  });
-
   let xArr = [];
 
   async function getData() {
@@ -24,11 +19,11 @@ $(document).ready(function () {
   let recoverPkgBtn = document.getElementById("recoverPkgBtn");
   let storageItem = localStorage.getItem("package");
 
-  if (storageItem != null) {
-    recoverPkgBtn.classList.remove("hidden");
-  } else {
-    recoverPkgBtn.classList.add("hidden");
-  }
+  console.log("storageItem", storageItem);
+
+  storageItem = ""
+    ? recoverPkgBtn.classList.add("hidden")
+    : recoverPkgBtn.classList.remove("hidden");
 
   getData();
 });
@@ -84,16 +79,14 @@ const createSideMenuBtn = (matType) => {
     <br />`;
 };
 
-const getMenuBtnHtml = (matType, icon, iconClass) => {
-  matTypeList.innerHTML += createSideMenuBtn(matType, icon, iconClass);
+const getMenuBtnHtml = (matType) => {
+  matTypeList.innerHTML += createSideMenuBtn(matType);
 };
 
 matTypesArr.map(function (matType) {
-  matType === "Carpet" &&
-    getMenuBtnHtml(matType, "project-diagram", "carpetMatIcon");
-  matType === "Resilient" &&
-    getMenuBtnHtml(matType, "chart-network", "resilientMatIcon");
-  matType === "Misc" && getMenuBtnHtml(matType, "code-branch", "miscMatIcon");
+  matType === "Carpet" && getMenuBtnHtml(matType);
+  matType === "Resilient" && getMenuBtnHtml(matType);
+  matType === "Misc" && getMenuBtnHtml(matType);
 });
 
 async function showMatTypes(mat) {
@@ -125,9 +118,7 @@ async function showMatTypes(mat) {
   options.innerHTML = "";
 
   mat === "Carpet" && getElement(carpetOptions, mat);
-
   mat === "Resilient" && getElement(resilientOptions, mat);
-
   mat === "Misc" && getElement(miscOptions, mat);
 }
 
@@ -183,8 +174,6 @@ const clrPkg = () => {
 };
 
 const clrBoard = () => {
-  pkgArr = [];
-
   let packageHandlerBtns = document.querySelectorAll(".packageHandlerBtn");
 
   packageHandlerBtns.forEach((button) => {
@@ -245,6 +234,13 @@ function recoverPackage() {
       convertedArr.includes(item.mId)
     );
 
+    recoveredPkg.map(function (item) {
+      if (item.styleId === "null" || item.styleId === undefined) {
+        item.styleId = "";
+      }
+      return item;
+    });
+
     recoveredPkg.map(function (mat) {
       let materialType = mat.typeId;
 
@@ -281,15 +277,48 @@ function recoveredMaterial(mat, matType) {
   recoverPkgBtn.classList.add("hidden");
   saveBtn.disabled = false;
   clrBtn.disabled = false;
-  // localStorage.removeItem("package");
 }
 
 function savePackage() {
+  let storedArr = [];
+
+  $("#pkgModal").modal("show");
   localStorage.setItem("package", pkgArr);
+  let storedPkg = localStorage.getItem("package");
 
-  let storedPackage = localStorage.getItem("package");
-  console.log(storedPackage);
+  let chars = storedPkg.split(",");
 
+  Object.values(chars).forEach((val) => {
+    storedArr.push(parseInt(val));
+  });
+
+  let pkgModalBody = `          
+    <div class="modal-header">
+      <h5 class="modal-title">Save Package</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+      <p>Modal body text goes here.</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-primary">Save changes</button>
+      <button
+        type="button"
+        class="btn btn-secondary"
+        data-dismiss="modal"
+      >
+        Close
+      </button>
+    </div>`;
+
+  console.log("storedArr", storedArr);
   saveBtn.disabled = true;
   saveBtn.classList.add("hidden");
   connectBtn.classList.remove("hidden");
@@ -312,18 +341,16 @@ const toggleBtn = (id) => {
   }
 };
 
-function test() {
-  console.log("test test");
-}
-
 $("#srchMatBtn").on("click", function () {
   let matSrchVal = materialSearchInput.value;
-
   let filter = matSrchVal.charAt(0).toUpperCase() + matSrchVal.slice(1);
-  console.log(filter);
-  !matSrchVal
-    ? (srchError.innerHTML = "Search term required")
-    : srchMatArr(resArr, matSrchVal);
+  if (!filter) {
+    srchError.innerHTML = "Search term required";
+  } else {
+    // Sends object to srchMatArr.js file
+    srchMatArr(resArr, filter);
+    materialSearchInput.value = "";
+  }
 });
 
 document.addEventListener(
@@ -333,7 +360,7 @@ document.addEventListener(
     dragged.style.opacity = 1;
     // dragged.style.background = "#ee6c4d75";
     dragged.style.borderColor = "red";
-    dragged.style.borderWidth = "5px";
+    dragged.style.borderWidth = "3px";
     event.dataTransfer.setData("text", event.target.id);
   },
   false
