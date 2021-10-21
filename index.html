@@ -70,20 +70,28 @@
             <div class="col-md-12">
               <h6>Available Packages</h6>
             </div>
-            <div class="col-md-12" id="ddlPackagesWrapper">
+            <div class="col-md-6" id="ddlPackagesWrapper">
               <select
                 id="ddlPackages"
                 name="ddlPackages"
                 class="packages-dropdown"
-                style="width: 40%"
+                style="width: 95%"
               ></select>
             </div>
+            <div
+              class="col-md-6"
+              id="errorMessage"
+              style="color: firebrick; font-size: 18px; font-weight: bold"
+            ></div>
           </div>
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-6">
               <small style="font-style: italic; color: #6a6a6a"
                 >Search by manufacturer name</small
               >
+            </div>
+            <div class="col-md-6" style="padding: 0">
+              <h6>Package Name</h6>
             </div>
           </div>
           <div class="row">
@@ -93,12 +101,12 @@
                 class="packageInput"
                 type="text"
                 style="
-                  width: 80%;
                   border-radius: 3px;
                   border: 1px solid grey;
                   padding: 3px;
                   position: relative;
                   top: 1.4px;
+                  width: 400px;
                 "
                 placeholder="Search"
               />
@@ -110,31 +118,27 @@
                 style="color: #dc3545; margin-left: 10px"
               ></span>
             </div>
-            <div class="col-md-6" style="text-align: end">
+            <div class="col-md-4" style="text-align: start; padding: 0">
+              <input
+                id="pkgNameInput"
+                type="text"
+                placeholder="Package Name"
+                style="width: 340px"
+              />
               <button
-                id="recoverPkgBtn"
-                class="btn btn-primary btn-sm hidden"
-                onclick="recoverPackage()"
-                style="width: 140px"
+                class="btn btn-sm"
+                style="background: none; color: #dc3545; padding: 0"
+                title="Clear package name"
               >
-                <i class="fal fa-redo-alt" style="margin-right: 5px"></i>
-                Recover Pkg
-              </button>
-              <button
-                id="clrBtn"
-                class="btn btn-danger btn-sm"
-                value="clrBtn"
-                disabled
-                title="Clear package and options"
-                onclick="clrPkg(); return false;"
-                style="margin-right: 30px; width: 140px"
-              >
-                <i class="far fa-times" style="margin-right: 8px"></i>Clear
+                <i
+                  class="fal fa-window-close"
+                  style="font-size: 32px; margin-bottom: 4px"
+                ></i>
               </button>
             </div>
           </div>
-          <div class="row" style="width: 100%; height: 80%">
-            <div class="col-md-6 h55 panel-width" style="height: 400px">
+          <div class="row" style="width: 100%; height: 470px">
+            <div class="col-md-6 h55" style="height: 400px">
               <div
                 id="options"
                 class="pkg-panel"
@@ -143,14 +147,48 @@
                 style="background-color: #ebebeb"
               ></div>
             </div>
-            <div class="col-md-6 h55 panel-width" style="height: 400px">
-              <div
-                id="package"
-                class="pkg-panel"
-                ondrop="drop(event, this)"
-                ondragover="allowDrop(event)"
-                style="background-color: #ebebeb"
-              ></div>
+            <div class="col-md-6" style="height: 400px; padding-right: 0">
+              <div class="pkg-panel" style="background-color: #ebebeb">
+                <div
+                  class="col-md-12"
+                  style="
+                    padding: 10px;
+                    text-align: end;
+                    border-bottom: 1px solid grey;
+                    /* background-color: #bebebe; */
+                  "
+                >
+                  <button
+                    id="recoverPkgBtn"
+                    class="btn btn-dark btn-sm hidden"
+                    title="Recover package"
+                    onclick="recoverPackage()"
+                    style="font-size: 14px; width: 120px"
+                  >
+                    <i
+                      class="fal fa-redo-alt"
+                      style="font-size: 18px; margin-right: 5px"
+                    ></i
+                    >Recover Pkg
+                  </button>
+                  <button
+                    id="clrBtn"
+                    class="btn btn-dark btn-sm"
+                    value="clrBtn"
+                    disabled
+                    title="Clear package and options"
+                    onclick="clrPkg(); return false;"
+                    style="margin-right: 15px; font-size: 14px; width: 120px"
+                  >
+                    <i class="fal fa-times" style="margin-right: 5px"></i>Clear
+                  </button>
+                </div>
+                <div
+                  id="package"
+                  ondrop="drop(event, this)"
+                  ondragover="allowDrop(event)"
+                ></div>
+              </div>
               <div class="talc mt10">
                 <button
                   id="saveBtn"
@@ -161,25 +199,26 @@
                   <i class="fal fa-save saveIcon imr"></i>
                   Save Package
                 </button>
-                <button
+                <!-- <button
                   id="connectBtn"
                   class="btn btn-dark btn-sm w50 hidden packageHandlerBtn"
                   onclick="connectJob(this.id);return false;"
                 >
                   <i class="far fa-link imr"></i>
                   Connect Job
-                </button>
+                </button> -->
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <!-- Package approval modal -->
     <div class="modal" id="pkgModal" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Modal title</h5>
+            <h5 class="modal-title" id="modalPkgTitle"></h5>
             <button
               type="button"
               class="close"

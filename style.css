@@ -130,16 +130,20 @@ body {
   visibility: hidden;
 }
 
-.panel-width {
+/* .panel-width {
   width: 100%;
-}
+} */
 
 #package-container {
   background-color: #ebebeb;
   height: 630px;
   margin-top: 50px;
   margin-bottom: 50px;
-  width: 80%;
+  width: 100%;
+}
+
+#package {
+  height: 1000px;
 }
 
 #lines-container {
@@ -181,22 +185,6 @@ body {
   margin-top: 10px;
   overflow: scroll;
   overflow-x: hidden;
-  /* box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; */
-}
-
-/* #clrBtn {
-  background-color: transparent;
-  color: #dc3545;
-} */
-
-/* #recoverPkgBtn {
-  background-color: transparent;
-  color: #007bff;
-} */
-
-#recoverPkgBtn:hover {
-  background-color: #007bff;
-  color: #fff;
 }
 
 #matTypeList {

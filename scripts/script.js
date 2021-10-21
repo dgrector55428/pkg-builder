@@ -6,6 +6,7 @@ $(document).ready(function () {
       .get(url)
       .then((response) => {
         handleResponse(response);
+        // console.log("response", response.data);
         xArr.push(response);
       })
       .catch((error) =>
@@ -19,11 +20,10 @@ $(document).ready(function () {
   let recoverPkgBtn = document.getElementById("recoverPkgBtn");
   let storageItem = localStorage.getItem("package");
 
-  console.log("storageItem", storageItem);
-
-  storageItem = ""
-    ? recoverPkgBtn.classList.add("hidden")
-    : recoverPkgBtn.classList.remove("hidden");
+  storageItem =
+    "" || storageItem === null
+      ? recoverPkgBtn.classList.add("hidden")
+      : recoverPkgBtn.classList.remove("hidden");
 
   getData();
 });
@@ -50,6 +50,10 @@ let saveBtn = document.getElementById("saveBtn");
 let connectBtn = document.getElementById("connectBtn");
 let materialSearchInput = document.getElementById("materialSearchInput");
 let srchError = document.getElementById("srchError");
+let pkgNameInput = document.getElementById("pkgNameInput");
+let errorMessage = document.getElementById("errorMessage");
+let modalPkgBody = document.getElementById("modalPkgBody");
+let modalPkgTitle = document.getElementById("modalPkgTitle");
 
 let materialArr = [];
 let pkgArr = [];
@@ -91,6 +95,7 @@ matTypesArr.map(function (matType) {
 
 async function showMatTypes(mat) {
   options.innerHTML = "";
+
   options.innerHTML = `
     <div class="progress" style="height: 2.4rem;">
       <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%;margin-top:10px;">Loading...</div>
@@ -106,7 +111,7 @@ async function showMatTypes(mat) {
     .catch((error) =>
       alert(
         error.response +
-          " Please try again and if this issue persists, please contact Inside Edge IT."
+          " Please try again and if this issue persists, please contact IT."
       )
     );
 
@@ -123,6 +128,12 @@ async function showMatTypes(mat) {
 }
 
 function getElement(option, matType) {
+  let localStorageArr = [];
+  let currentPkg = localStorage.getItem("package");
+  let chars = currentPkg.split(",");
+
+  chars.map((item) => localStorageArr.push(parseInt(item)));
+
   let newArr = option.map(function (item) {
     if (item.styleId === "null" || item.styleId === undefined) {
       item.styleId = "";
@@ -130,68 +141,16 @@ function getElement(option, matType) {
     return item;
   });
 
-  newArr.map(
+  let filteredPkgs = newArr.filter(
+    (item) => !localStorageArr.includes(item.mId)
+  );
+
+  filteredPkgs.map(
     (mat) => (options.innerHTML += createMaterialElement(mat, matType))
   );
 }
 
-const handleResponse = (response) => {
-  resArr = [];
-  let res = response.data;
-  resArr.push(res);
-
-  res.forEach(function (object) {
-    for (key in object) {
-      if (object[key] == null) object[key] = "";
-      materialArr.push(res);
-    }
-  });
-};
-
-const clrPkg = () => {
-  Swal.fire({
-    title: "Are you sure?",
-    text: "This action will be permanent!",
-    icon: "warning",
-    showClass: {
-      backdrop: "swal2-noanimation",
-      popup: "",
-      icon: "",
-    },
-    hideClass: {
-      popup: "",
-    },
-    width: "320px",
-    position: "top",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#dd3333d9",
-    customClass: {},
-    confirmButtonText: "Yes, clear package!",
-  }).then((result) => {
-    result.isConfirmed && clrBoard();
-  });
-};
-
-const clrBoard = () => {
-  let packageHandlerBtns = document.querySelectorAll(".packageHandlerBtn");
-
-  packageHandlerBtns.forEach((button) => {
-    button.disabled = true;
-  });
-
-  clrBtn.disabled = true;
-  saveBtn.classList.remove("hidden");
-  connectBtn.classList.add("hidden");
-  recoverPkgBtn.classList.remove("hidden");
-
-  package.innerHTML = "";
-  options.innerHTML = "";
-};
-
 const createMaterialElement = (mat, matType) => {
-  console.log(mat);
-
   let html = `
       <div 
         class="row optionsList ${matType}" 
@@ -218,9 +177,73 @@ const createMaterialElement = (mat, matType) => {
     : "There is an issue rendering the element.  Please try again.<br />";
 };
 
+const handleResponse = (response) => {
+  resArr = [];
+  let res = response.data;
+  resArr.push(res);
+
+  res.forEach(function (object) {
+    for (key in object) {
+      if (object[key] == null) object[key] = "";
+      materialArr.push(res);
+    }
+  });
+};
+
+pkgNameInput.addEventListener(
+  "input",
+  function (e) {
+    errorMessage.innerHTML = "";
+  },
+  false
+);
+
+const clrPkg = () => {
+  Swal.fire({
+    title: "Are you sure?",
+    text: "This action will be permanent!",
+    icon: "warning",
+    showClass: {
+      backdrop: "swal2-noanimation",
+      popup: "",
+      icon: "",
+    },
+    hideClass: {
+      popup: "",
+    },
+    width: "320px",
+    position: "top",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#dd3333d9",
+    customClass: {},
+    confirmButtonText: "Yes, clear package!",
+  }).then((result) => {
+    pkgNameInput.value = "";
+    result.isConfirmed && clrBoard();
+  });
+};
+
+const clrBoard = () => {
+  let packageHandlerBtns = document.querySelectorAll(".packageHandlerBtn");
+
+  packageHandlerBtns.forEach((button) => {
+    button.disabled = true;
+  });
+
+  clrBtn.disabled = true;
+  saveBtn.classList.remove("hidden");
+  // connectBtn.classList.add("hidden");
+  recoverPkgBtn.classList.remove("hidden");
+
+  package.innerHTML = "";
+  options.innerHTML = "";
+};
+
 function recoverPackage() {
   let matList = resArr[0];
   let currentPackage = localStorage.getItem("package");
+  let packageName = localStorage.getItem("packageName");
   let convertedArr = [];
 
   if (currentPackage) {
@@ -241,6 +264,8 @@ function recoverPackage() {
       return item;
     });
 
+    pkgNameInput.value = packageName;
+
     recoveredPkg.map(function (mat) {
       let materialType = mat.typeId;
 
@@ -248,6 +273,8 @@ function recoverPackage() {
       materialType === 2 && recoveredMaterial(mat, "Resilient");
       materialType === 9 && recoveredMaterial(mat, "Misc");
     });
+  } else {
+    errorMessage.innerHTML = `<i class="far fa-exclamation-circle" style="margin-right:5px;font-size:20px"></i>Previous package not available, try building a new package.`;
   }
 }
 
@@ -280,48 +307,46 @@ function recoveredMaterial(mat, matType) {
 }
 
 function savePackage() {
-  let storedArr = [];
+  const pkgIds = $.map($("#package > div"), (div) => div.id);
 
-  $("#pkgModal").modal("show");
-  localStorage.setItem("package", pkgArr);
-  let storedPkg = localStorage.getItem("package");
+  pkgNameInput.value.length === 0 &&
+    (errorMessage.innerHTML = "Package name required to save package!");
 
-  let chars = storedPkg.split(",");
+  if (pkgNameInput.value.length > 0) {
+    localStorage.setItem("packageName", pkgNameInput.value);
+    localStorage.setItem("package", pkgIds);
+    let storedArr = [];
+    let storedPkg = localStorage.getItem("package");
+    let chars = storedPkg.split(",");
 
-  Object.values(chars).forEach((val) => {
-    storedArr.push(parseInt(val));
-  });
+    Object.values(chars).forEach((val) => {
+      storedArr.push(parseInt(val));
+    });
+    $("#pkgModal").modal("show");
 
-  let pkgModalBody = `          
-    <div class="modal-header">
-      <h5 class="modal-title">Save Package</h5>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="modal"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-      <p>Modal body text goes here.</p>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-primary">Save changes</button>
-      <button
-        type="button"
-        class="btn btn-secondary"
-        data-dismiss="modal"
-      >
-        Close
-      </button>
-    </div>`;
+    //Build package from Local Storage
+    let pkgModalBody = `          
+    <p>Modal body text goes here.</p>`;
 
-  console.log("storedArr", storedArr);
-  saveBtn.disabled = true;
-  saveBtn.classList.add("hidden");
-  connectBtn.classList.remove("hidden");
+    let localPkgName = localStorage.getItem("packageName");
+    pkgNameInput.value = "";
+    package.innerHTML = "";
+    modalPkgBody.innerHTML = pkgModalBody;
+    modalPkgTitle.innerHTML = `${localPkgName} Package`;
+    saveBtn.disabled = true;
+    // saveBtn.classList.add("hidden");
+    // connectBtn.classList.remove("hidden");
+
+    let recoverPkgBtn = document.getElementById("recoverPkgBtn");
+    let storageItem = localStorage.getItem("package");
+
+    console.log("storageItem", storageItem);
+
+    storageItem =
+      "" || storageItem === null
+        ? recoverPkgBtn.classList.add("hidden")
+        : recoverPkgBtn.classList.remove("hidden");
+  }
 }
 
 const connectJob = () => {
@@ -342,6 +367,7 @@ const toggleBtn = (id) => {
 };
 
 $("#srchMatBtn").on("click", function () {
+  options.innerHTML = "";
   let matSrchVal = materialSearchInput.value;
   let filter = matSrchVal.charAt(0).toUpperCase() + matSrchVal.slice(1);
   if (!filter) {
@@ -378,7 +404,9 @@ document.addEventListener(
 document.addEventListener(
   "drop",
   function (event, target) {
+    errorMessage.innerHTML = "";
     localStorage.removeItem("package");
+    localStorage.removeItem("packageName");
     recoverPkgBtn.classList.add("hidden");
     event.preventDefault();
 

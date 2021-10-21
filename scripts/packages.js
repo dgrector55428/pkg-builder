@@ -13,7 +13,7 @@ async function getPkgData() {
     .catch((error) =>
       alert(
         error.response +
-          "Please try again and if this issue persists, please contact Inside Edge IT."
+          "Please try again. If this issue persists, please contact IT."
       )
     );
 }
@@ -50,4 +50,5 @@ let placeholder = {
 let newOption = new Option(placeholder.text, placeholder.id, true, false);
 $("#ddlPackages").select2().append(newOption).trigger("change");
 
-getPkgData();
+// Get packages for dropdown
+// getPkgData();
