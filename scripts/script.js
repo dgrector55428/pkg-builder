@@ -354,7 +354,7 @@ $("#pkgModalCloseBtn").on("click", function () {
 const buildPkgModal = (arr) => {
   let localPkgName = localStorage.getItem("packageName");
   $("#pkgModal").modal("show");
-  modalPkgTitle.innerHTML = `<h6>Package name :</h6> ${localPkgName} `;
+  modalPkgTitle.innerHTML = `<h6>Package name:</h6> ${localPkgName} `;
   let matList = resArr[0];
 
   let modalDisplayPkg = matList.filter((item) => arr.includes(item.mId));
