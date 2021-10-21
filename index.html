@@ -14,7 +14,6 @@
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
       crossorigin="anonymous"
     />
-    <!-- <link rel="stylesheet" href="./bootstrap.css" /> -->
     <link
       rel="stylesheet"
       href="https://pro.fontawesome.com/releases/v5.15.1/css/all.css"
@@ -28,7 +27,7 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="./styles/style.css" />
   </head>
   <body>
     <!-- <div class="container" id="lines-container">
@@ -122,7 +121,7 @@
               <input
                 id="pkgNameInput"
                 type="text"
-                placeholder="Package Name"
+                placeholder="Enter package name"
                 style="width: 340px"
               />
               <button
@@ -228,11 +227,28 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body" id="modalPkgBody"></div>
+          <div class="modal-body" id="modalPkgBody">
+            <h6>Job parameters:</h6>
+            <div class="input-group mb-3" id="jobReqs">
+              <label for="basic-url" style="margin-right: 5px">Coverage:</label>
+              <input type="text" class="form-control" id="modalSqFtInput" />
+              <span style="margin-left: 10px">Sq Ft</span>
+            </div>
+            <button
+              class="btn btn-sm btn-secondary"
+              id="calcMatBtn"
+              onclick="measureCalc()"
+            >
+              Calculate materials
+            </button>
+            <hr />
+            <h6>Materials:</h6>
+          </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <button type="button" class="btn btn-primary">Save package</button>
             <button
               type="button"
+              id="pkgModalCloseBtn"
               class="btn btn-secondary"
               data-dismiss="modal"
             >

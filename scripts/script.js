@@ -6,7 +6,7 @@ $(document).ready(function () {
       .get(url)
       .then((response) => {
         handleResponse(response);
-        // console.log("response", response.data);
+        console.log("response", response.data);
         xArr.push(response);
       })
       .catch((error) =>
@@ -39,13 +39,9 @@ let matTypesArr = [
   "CeilingTile",
   "Misc",
 ];
-let pkgOptionsList = document.getElementById("pkgOptionsList");
+
 let options = document.getElementById("options");
 let matTypeList = document.getElementById("matTypeList");
-let pkgOptionsBtn = document.getElementById("pkgOptionsBtn");
-let helpText = document.getElementById("helperText");
-let helperWrapper = document.getElementById("helper-wrapper");
-let pkgDiv = document.getElementById("package");
 let saveBtn = document.getElementById("saveBtn");
 let connectBtn = document.getElementById("connectBtn");
 let materialSearchInput = document.getElementById("materialSearchInput");
@@ -54,16 +50,12 @@ let pkgNameInput = document.getElementById("pkgNameInput");
 let errorMessage = document.getElementById("errorMessage");
 let modalPkgBody = document.getElementById("modalPkgBody");
 let modalPkgTitle = document.getElementById("modalPkgTitle");
+let pkgModalCloseBtn = document.getElementById("pkgModalCloseBtn");
+let modalSqFtInput = document.getElementById("modalSqFtInput");
 
 let materialArr = [];
 let pkgArr = [];
 let resArr = [];
-
-let carpetIcon = "project-diagram";
-let resilientIcon = "chart-network";
-let miscIcon = "code-branch";
-let buildPkgHelperText =
-  "To build package, drag material block from left to right";
 
 const code = "0YFHAstDb4GOYLHaZijZ8EctBn/LpPjrIWN19mwwzirReN1sI0/S3Q==";
 const url = `https://soxv6.azurewebsites.net/Materials?code=${code}`;
@@ -106,7 +98,6 @@ async function showMatTypes(mat) {
     .get(url)
     .then((response) => {
       handleResponse(response);
-      console.log();
     })
     .catch((error) =>
       alert(
@@ -130,28 +121,39 @@ async function showMatTypes(mat) {
 function getElement(option, matType) {
   let localStorageArr = [];
   let currentPkg = localStorage.getItem("package");
-  let chars = currentPkg.split(",");
 
-  //Push locally stored package to array to use for filtering displayed package
-  chars.map((item) => localStorageArr.push(parseInt(item)));
+  if (currentPkg !== null) {
+    let chars = currentPkg.split(",");
 
-  //Only display actual data, preventing null and undefined values from dislaying in options panel
-  let newArr = option.map(function (item) {
-    if (item.styleId === "null" || item.styleId === undefined) {
-      item.styleId = "";
-    }
-    return item;
-  });
+    chars.map((item) => localStorageArr.push(parseInt(item)));
 
-  //Filter package
-  let filteredPkgs = newArr.filter(
-    (item) => !localStorageArr.includes(item.mId)
-  );
+    let newArr = option.map(function (item) {
+      if (item.styleId === "null" || item.styleId === undefined) {
+        item.styleId = "";
+      }
+      return item;
+    });
 
-  filteredPkgs.map(
-    (mat) => (options.innerHTML += createMaterialElement(mat, matType))
-  );
+    let filteredPkgs = newArr.filter(
+      (item) => !localStorageArr.includes(item.mId)
+    );
+
+    handleArr(filteredPkgs, matType);
+  } else {
+    let newArr = option.map(function (item) {
+      if (item.styleId === "null" || item.styleId === undefined) {
+        item.styleId = "";
+      }
+      return item;
+    });
+
+    handleArr(newArr, matType);
+  }
 }
+
+const handleArr = (arr, matType) => {
+  arr.map((mat) => (options.innerHTML += createMaterialElement(mat, matType)));
+};
 
 const createMaterialElement = (mat, matType) => {
   let html = `
@@ -243,7 +245,7 @@ const clrBoard = () => {
   options.innerHTML = "";
 };
 
-function recoverPackage() {
+const recoverPackage = () => {
   let matList = resArr[0];
   let currentPackage = localStorage.getItem("package");
   let packageName = localStorage.getItem("packageName");
@@ -277,9 +279,10 @@ function recoverPackage() {
       materialType === 9 && recoveredMaterial(mat, "Misc");
     });
   } else {
-    errorMessage.innerHTML = `<i class="far fa-exclamation-circle" style="margin-right:5px;font-size:20px"></i>Previous package not available, try building a new package.`;
+    errorMessage.innerHTML =
+      "Previous package not available, try building a new package.";
   }
-}
+};
 
 function recoveredMaterial(mat, matType) {
   let html = `
@@ -312,9 +315,6 @@ function recoveredMaterial(mat, matType) {
 function savePackage() {
   const pkgIds = $.map($("#package > div"), (div) => div.id);
 
-  pkgNameInput.value.length === 0 &&
-    (errorMessage.innerHTML = "Package name required to save package!");
-
   if (pkgNameInput.value.length > 0) {
     localStorage.setItem("packageName", pkgNameInput.value);
     localStorage.setItem("package", pkgIds);
@@ -325,17 +325,12 @@ function savePackage() {
     Object.values(chars).forEach((val) => {
       storedArr.push(parseInt(val));
     });
-    $("#pkgModal").modal("show");
 
     //Build package from Local Storage
-    let pkgModalBody = `          
-    <p>Modal body text goes here.</p>`;
 
-    let localPkgName = localStorage.getItem("packageName");
     pkgNameInput.value = "";
     package.innerHTML = "";
-    modalPkgBody.innerHTML = pkgModalBody;
-    modalPkgTitle.innerHTML = `${localPkgName} Package`;
+    buildPkgModal(storedArr);
     saveBtn.disabled = true;
     // saveBtn.classList.add("hidden");
     // connectBtn.classList.remove("hidden");
@@ -343,14 +338,95 @@ function savePackage() {
     let recoverPkgBtn = document.getElementById("recoverPkgBtn");
     let storageItem = localStorage.getItem("package");
 
-    console.log("storageItem", storageItem);
-
     storageItem =
       "" || storageItem === null
         ? recoverPkgBtn.classList.add("hidden")
         : recoverPkgBtn.classList.remove("hidden");
+  } else {
+    errorMessage.innerHTML = "Package name required to save package!";
   }
 }
+
+$("#pkgModalCloseBtn").on("click", function () {
+  modalPkgBody.innerHTML = "";
+});
+
+const buildPkgModal = (arr) => {
+  let localPkgName = localStorage.getItem("packageName");
+  $("#pkgModal").modal("show");
+  modalPkgTitle.innerHTML = `<h6>Package name :</h6> ${localPkgName} `;
+  let matList = resArr[0];
+
+  let modalDisplayPkg = matList.filter((item) => arr.includes(item.mId));
+
+  modalDisplayPkg.map(function (mat) {
+    modalPkgBody.innerHTML += `
+    <div 
+        class="row optionsList modalPkg ${getMatType(mat)} " 
+        id="${mat.mId}"
+        ondragstart="dragStart(event)" 
+        draggable="true"
+        ondragover="noAllowDrop(event)"
+        style="padding:0;"
+      >
+        <div class="col-md-4" style="text-align:left;">
+          <span id="dragMfrName">
+            ${mat.mfrName} 
+          </span>
+        </div>
+        <div class="col-md-8">
+            <span style="font-weight:600;">Style:</span> ${mat.styleId} ${
+      mat.styleName
+    }<br />
+            <span style="font-weight:600;">Color:</span> ${mat.colorId} ${
+      mat.colorName
+    }<br />
+        </div>
+        <div class="" id=""></div>
+      </div>
+    `;
+  });
+};
+
+// *****ADD MAT TYPE OPTIONS FOR ADDITIONAL FUNCTIONALITY*****
+function getMatType(mat) {
+  if (mat.typeId === 1) {
+    return "Carpet";
+  }
+  if (mat.typeId === 2) {
+    return "Resilient";
+  }
+  if (mat.typeId === 9) {
+    return "Misc";
+  }
+}
+
+const createModalBody = (mat) => {
+  let html = `
+      <div 
+        class="row optionsList" 
+        id="${mat.mId}"
+        ondragstart="dragStart(event)" 
+        draggable="true"
+        ondragover="noAllowDrop(event)"
+        style="padding:0;"
+      >
+        <div class="col-md-4" style="text-align:left;">
+          <span id="dragMfrName">
+            ${mat.mfrName} 
+          </span>
+        </div>
+        <div class="col-md-8">
+            <span style="font-weight:600;">Style:</span> ${mat.styleId} ${mat.styleName}<br />
+            <span style="font-weight:600;">Color:</span> ${mat.colorId} ${mat.colorName}<br />
+        </div>
+      </div>
+    `;
+
+  return html
+    ? html
+    : "There is an issue rendering the element.  Please try again.<br />";
+};
 
 const connectJob = () => {
   console.log("in connect job");
@@ -359,15 +435,18 @@ const connectJob = () => {
 const toggleBtn = (id) => {
   let buttonToToggle = document.getElementById(id);
 
-  console.log(buttonToToggle.classList);
-
-  if (buttonToToggle.classList === "hidden") {
+  buttonToToggle.classList === "hidden" &&
     buttonToToggle.classList.remove("hidden");
-  }
-  if (buttonToToggle.classList != "hidden") {
+
+  buttonToToggle.classList !== "hidden" &&
     buttonToToggle.classList.add("hidden");
-  }
 };
+
+function measureCalc() {
+  console.log("clicked");
+  let sqFtInput = parseInt($("#modalSqFtInput").val());
+  console.log("sqFtInput", sqFtInput);
+}
 
 $("#srchMatBtn").on("click", function () {
   options.innerHTML = "";
@@ -387,7 +466,6 @@ document.addEventListener(
   function (event) {
     dragged = event.target;
     dragged.style.opacity = 1;
-    // dragged.style.background = "#ee6c4d75";
     dragged.style.borderColor = "red";
     dragged.style.borderWidth = "3px";
     event.dataTransfer.setData("text", event.target.id);
@@ -438,10 +516,8 @@ document.addEventListener(
 
 document.addEventListener("drag", function (event) {}, false);
 
-document.addEventListener("drop", function (event) {}, false);
-
 const playSound = () => {
-  let path = "./whiz2.mp3";
+  let path = "./whiz.wav";
   let sound = new Audio(path);
   sound.play();
 };

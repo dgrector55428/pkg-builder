@@ -358,3 +358,12 @@ body {
   position: relative;
   top: 25%;
 }
+
+#jobReqs {
+  width: 300px;
+}
+
+#jobReqs label,
+#jobReqs span {
+  margin-top: 5px;
+}
