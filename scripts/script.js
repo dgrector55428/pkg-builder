@@ -132,8 +132,10 @@ function getElement(option, matType) {
   let currentPkg = localStorage.getItem("package");
   let chars = currentPkg.split(",");
 
+  //Push locally stored package to array to use for filtering displayed package
   chars.map((item) => localStorageArr.push(parseInt(item)));
 
+  //Only display actual data, preventing null and undefined values from dislaying in options panel
   let newArr = option.map(function (item) {
     if (item.styleId === "null" || item.styleId === undefined) {
       item.styleId = "";
@@ -141,6 +143,7 @@ function getElement(option, matType) {
     return item;
   });
 
+  //Filter package
   let filteredPkgs = newArr.filter(
     (item) => !localStorageArr.includes(item.mId)
   );
