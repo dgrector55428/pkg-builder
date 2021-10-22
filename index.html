@@ -199,9 +199,9 @@
     <!-- Package approval modal -->
     <div class="modal" id="pkgModal" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-content" id="modalContent">
           <div class="modal-header">
-            <h5 class="modal-title" id="modalPkgTitle"></h5>
+            <h5 class="modal-title" id="modalTitle">Package Builder</h5>
             <button
               type="button"
               class="close"
@@ -212,12 +212,22 @@
             </button>
           </div>
           <div class="modal-body" id="modalPkgBody">
-            <h6>Job parameters:</h6>
-            <div class="input-group mb-3" id="jobReqs">
-              <label for="basic-url" style="margin-right: 5px">Coverage:</label>
-              <input type="text" class="form-control" id="modalSqFtInput" />
-              <span style="margin-left: 10px">Sq Ft</span>
+            <div id="pkgNameWrapper">
+              <h6>Package name:</h6>
+              <h5 class="modal-title" id="modalPkgTitle">Package Builder</h5>
             </div>
+            <hr />
+            <div id="jobParams">
+              <h6>Job parameters:</h6>
+              <div class="input-group mb-3" id="jobReqs">
+                <label for="basic-url" style="margin-right: 5px"
+                  >Coverage:</label
+                >
+                <input type="text" class="form-control" id="modalSqFtInput" />
+                <span style="margin-left: 10px">Sq Ft</span>
+              </div>
+            </div>
+            <hr />
             <button
               class="btn btn-sm btn-secondary"
               id="calcMatBtn"
