@@ -316,7 +316,6 @@ function recoveredMaterial(mat, matType) {
 
 function savePackage() {
   const pkgIds = $.map($("#package > div"), (div) => div.id);
-  console.log("pkgNameInput.value.length", pkgNameInput.value.length);
   if (pkgNameInput.value.length > 0) {
     localStorage.setItem("packageName", pkgNameInput.value);
     localStorage.setItem("package", pkgIds);
@@ -355,6 +354,7 @@ $("#pkgModalCloseBtn").on("click", function () {
 });
 
 const buildPkgModal = (arr) => {
+  // modalPkgBody.innerHTML = "";
   let localPkgName = localStorage.getItem("packageName");
   $("#pkgModal").modal("show");
   modalPkgTitle.innerHTML = ` <span id="localPkgName">${localPkgName}</span> `;
