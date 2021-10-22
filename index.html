@@ -4,30 +4,15 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Package Builder</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://pro.fontawesome.com/releases/v5.15.1/css/all.css"
-      integrity="sha384-9ZfPnbegQSumzaE7mks2IYgHoayLtuto3AS6ieArECeaR8nCfliJVuLh/GaQ1gyM"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css"
-      integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
+    <link rel="stylesheet" href="./vendors/css/bootstrap-4.0.0.min.css" />
+    <link rel="stylesheet" href="./vendors/css/select2.min.css" />
     <link rel="stylesheet" href="./styles/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.15.4/css/all.css"
+      integrity="sha384-rqn26AG5Pj86AF4SO72RK5fyefcQ/x32DNQfChxWvbXIyXFePlEktwD18fEz+kQU"
+      crossorigin="anonymous"
+    />
   </head>
   <body>
     <!-- <div class="container" id="lines-container">
@@ -77,11 +62,13 @@
                 style="width: 95%"
               ></select>
             </div>
-            <div
-              class="col-md-6"
-              id="errorMessage"
-              style="color: firebrick; font-size: 18px; font-weight: bold"
-            ></div>
+            <div class="col-md-6" style="padding-left: 0">
+              <div
+                class="alert alert-danger hidden"
+                role="alert"
+                id="errorMessage"
+              ></div>
+            </div>
           </div>
           <div class="row">
             <div class="col-md-6">
@@ -125,14 +112,11 @@
                 style="width: 340px"
               />
               <button
-                class="btn btn-sm"
-                style="background: none; color: #dc3545; padding: 0"
+                class="btn btn-danger btn-sm"
                 title="Clear package name"
+                id="clrPkgNameBtn"
               >
-                <i
-                  class="fal fa-window-close"
-                  style="font-size: 32px; margin-bottom: 4px"
-                ></i>
+                <i id="clgPkgBtnIcon" class="fal fa-times"></i>
               </button>
             </div>
           </div>
@@ -258,55 +242,23 @@
         </div>
       </div>
     </div>
-
-    <script
-      src="https://code.jquery.com/jquery-3.6.0.min.js"
-      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-      crossorigin="anonymous"
-    ></script>
-
-    <script
-      src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"
-      integrity="sha512-uVSVjE7zYsGz4ag0HEzfugJ78oHCI1KhdkivjQro8ABL/PRiEO4ROwvrolYAcZnky0Fl/baWKYilQfWvESliRA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/jszip-utils/0.1.0/jszip-utils.min.js"
-      integrity="sha512-3WaCYjK/lQuL0dVIRt1thLXr84Z/4Yppka6u40yEJT1QulYm9pCxguF6r8V84ndP5K03koI9hV1+zo/bUbgMtA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      type="text/javascript"
-      src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
-      integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.4/axios.min.js"
-      integrity="sha512-lTLt+W7MrmDfKam+r3D2LURu0F47a3QaW5nF0c6Hl0JDZ57ruei+ovbg7BrZ+0bjVJ5YgzsAWE+RreERbpPE1g=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
+    <!-- jQuery -->
+    <script src="./vendors/js/jquery-3.6.0.min.js"></script>
+    <script src="./vendors/js/popper.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="./vendors/js/bootstrap-4.0.0.min.js"></script>
+    <script src="./vendors/js/bootstrap-datepicker.min.js"></script>
+    <!-- JSZip -->
+    <script src="./vendors/js/jszip-3.5.0.min.js"></script>
+    <script src="./vendors/js/jszip-utils.min.js"></script>
+    <script src="./vendors/js/FileSaver.min.js"></script>
+    <!-- Select2 -->
+    <script src="./vendors/js/select2.min.js"></script>
+    <!-- Axios -->
+    <script src="./vendors/js/axios.min.js"></script>
+    <!-- Sweetalert -->
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Local scripts -->
     <script src="./scripts/dragDrop.js"></script>
     <script src="./scripts/packages.js"></script>
     <script src="./scripts/recoverPackage.js"></script>

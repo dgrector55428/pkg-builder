@@ -199,6 +199,7 @@ pkgNameInput.addEventListener(
   "input",
   function (e) {
     errorMessage.innerHTML = "";
+    errorMessage.classList.add("hidden");
   },
   false
 );
@@ -279,6 +280,7 @@ const recoverPackage = () => {
       materialType === 9 && recoveredMaterial(mat, "Misc");
     });
   } else {
+    errorMessage.classList.remove("hidden");
     errorMessage.innerHTML =
       "Previous package not available, try building a new package.";
   }
@@ -314,7 +316,7 @@ function recoveredMaterial(mat, matType) {
 
 function savePackage() {
   const pkgIds = $.map($("#package > div"), (div) => div.id);
-
+  console.log("pkgNameInput.value.length", pkgNameInput.value.length);
   if (pkgNameInput.value.length > 0) {
     localStorage.setItem("packageName", pkgNameInput.value);
     localStorage.setItem("package", pkgIds);
@@ -343,7 +345,8 @@ function savePackage() {
         ? recoverPkgBtn.classList.add("hidden")
         : recoverPkgBtn.classList.remove("hidden");
   } else {
-    errorMessage.innerHTML = "Package name required to save package!";
+    errorMessage.classList.remove("hidden");
+    errorMessage.innerHTML = `<i class="far fa-exclamation-circle errorIcon"></i>Package name required to save package!`;
   }
 }
 
@@ -443,9 +446,7 @@ const toggleBtn = (id) => {
 };
 
 function measureCalc() {
-  console.log("clicked");
   let sqFtInput = parseInt($("#modalSqFtInput").val());
-  console.log("sqFtInput", sqFtInput);
 }
 
 $("#srchMatBtn").on("click", function () {
@@ -459,6 +460,11 @@ $("#srchMatBtn").on("click", function () {
     srchMatArr(resArr, filter);
     materialSearchInput.value = "";
   }
+});
+
+$("#clrPkgNameBtn").on("click", function () {
+  pkgNameInput.value = "";
+  pkgNameInput.focus();
 });
 
 document.addEventListener(
@@ -485,6 +491,7 @@ document.addEventListener(
 document.addEventListener(
   "drop",
   function (event, target) {
+    errorMessage.classList.add("hidden");
     errorMessage.innerHTML = "";
     localStorage.removeItem("package");
     localStorage.removeItem("packageName");
